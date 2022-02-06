@@ -1,27 +1,28 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
 import MeetupList from '../components/meetups/MeetupList';
 
 function AllMeetupsPage() {
+	console.log(process.env.REACT_APP_DB_URL)
 	const [isLoading, setIsLoading] = useState(false);
 	const [loadedMeetups, setLoadedMeetups] = useState([]);
 
 	useEffect(() => {
-    setIsLoading(true);
-		fetch(
-			'https://react-getting-started-65e1c-default-rtdb.firebaseio.com/meetups.json'
-		)
+		setIsLoading(true);
+		fetch(process.env.REACT_APP_DB_URL)
 			.then((response) => {
 				return response.json();
 			})
 			.then((data) => {
-        const meetups = [];
-        for (const key in data) {
-          const meetup = {
-            id: key,
-            ...data[key]
-          };
-          meetups.push(meetup);
-        }
+				const meetups = [];
+				for (const key in data) {
+					const meetup = {
+						id: key,
+						...data[key],
+					};
+					meetups.push(meetup);
+				}
 				setIsLoading(false);
 				setLoadedMeetups(meetups);
 			});
@@ -36,10 +37,17 @@ function AllMeetupsPage() {
 	}
 
 	return (
-		<section>
-			<h1>All Meetups</h1>
-			<MeetupList meetups={loadedMeetups} />
-		</section>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			transition={{ duration: 0.5 }}
+		>
+			<section>
+				<h1>All Meetups</h1>
+				<MeetupList meetups={loadedMeetups} />
+			</section>
+		</motion.div>
 	);
 }
 
