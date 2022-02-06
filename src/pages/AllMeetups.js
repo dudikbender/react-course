@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import MeetupList from '../components/meetups/MeetupList';
 
 function AllMeetupsPage() {
-	console.log(process.env.REACT_APP_DB_URL)
 	const [isLoading, setIsLoading] = useState(false);
 	const [loadedMeetups, setLoadedMeetups] = useState([]);
 
